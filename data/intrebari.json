@@ -1,0 +1,22 @@
+
+
+[
+  {
+    "question": "Care este capitala Franței?",
+    "correct_answer": "Paris",
+    "wrong_answers": ["Lyon", "Marseille", "Nice"],
+    "difficulty": 1
+  },
+  {
+    "question": "Ce planetă este cunoscută ca 'Planeta Roșie'?",
+    "correct_answer": "Marte",
+    "wrong_answers": ["Venus", "Jupiter", "Saturn"],
+    "difficulty": 1
+  },
+  {
+    "question": "Cine a compus Simfonia a 5-a?",
+    "correct_answer": "Beethoven",
+    "wrong_answers": ["Mozart", "Bach", "Chopin"],
+    "difficulty": 2
+  }
+]

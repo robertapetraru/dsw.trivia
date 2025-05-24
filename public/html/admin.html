@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Admin</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Trivia Admin Panel</h1>
+            <a href="index.html" class="admin-link">Back to Game</a>
+        </header>
+        
+        <main>
+            <!-- This button must have exactly this ID -->
+            <div class="admin-controls">
+                <h2>Manage Questions</h2>
+                <!-- Replace your add question button with this version -->
+                <button id="add-question-btn" onclick="document.getElementById('question-form').classList.remove('hidden'); console.log('Inline click worked!');">Add New Question</button>
+            </div>
+            
+            <!-- This form must have exactly this ID and the hidden class -->
+            <div id="question-form" class="hidden">
+                <h3 id="form-title">Add New Question</h3>
+                <form id="question-data-form">
+                    <!-- Form content -->
+                    <input type="hidden" id="question-id">
+                    
+                    <div class="form-group">
+                        <label for="question-text">Question:</label>
+                        <textarea id="question-text" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="correct-answer">Correct Answer:</label>
+                        <input type="text" id="correct-answer" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Incorrect Answers:</label>
+                        <input type="text" class="incorrect-answer" placeholder="Incorrect Answer 1" required>
+                        <input type="text" class="incorrect-answer" placeholder="Incorrect Answer 2" required>
+                        <input type="text" class="incorrect-answer" placeholder="Incorrect Answer 3" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="difficulty">Difficulty:</label>
+                        <select id="difficulty" required>
+                            <option value="1">Easy</option>
+                            <option value="2">Medium</option>
+                            <option value="3">Hard</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" id="save-question">Save</button>
+                        <button type="button" id="cancel-edit">Cancel</button>
+                    </div>
+                </form>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Question</th>
+                        <th>Answer</th>
+                        <th>Difficulty</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="questions-list">
+                    <!-- Questions will be populated here -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+    <script src="../js/debug.js"></script>
+</body>
+</html>

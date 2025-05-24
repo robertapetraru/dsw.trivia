@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Game</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Trivia Challenge</h1>
+            <div class="score-container">
+                <span>Score: </span><span id="score">0</span>
+            </div>
+        </header>
+
+        <main>
+            <div id="welcome-screen">
+                <h2>Welcome to the Trivia Challenge!</h2>
+                <p>Test your knowledge with random questions. The game ends when you answer incorrectly.</p>
+                <button id="start-game">Start Game</button>
+                <a href="html/admin.html" class="admin-link">Admin Panel</a>
+            </div>
+
+            <div id="game-screen" class="hidden">
+                <div id="question-container">
+                    <h2 id="question">Question goes here</h2>
+                    <div id="answers-container">
+                        <!-- Answers will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-over-screen" class="hidden">
+                <h2>Game Over!</h2>
+                <p>Your final score: <span id="final-score">0</span></p>
+                <button id="play-again">Play Again</button>
+            </div>
+        </main>
+
+        
+    </div>
+
+    <script src="../js/game.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>
