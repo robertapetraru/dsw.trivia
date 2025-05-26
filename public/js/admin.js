@@ -198,122 +198,143 @@ async function deleteQuestion(id) {
 }
 
 // Save a question (add or update)
-async function saveQuestion() {
-    console.log("Saving question");
-    
-    // Get values from form
-    const id = questionIdInput.value ? parseInt(questionIdInput.value) : Date.now();
-    const question = questionTextInput.value;
-    const correctAnswer = correctAnswerInput.value;
-    const incorrectAnswers = Array.from(incorrectAnswerInputs).map(input => input.value);
-    const difficulty = parseInt(difficultySelect.value);
-    
-    // Create the question object
-    const questionData = {
-        id,
-        question,
-        correctAnswer,
-        incorrectAnswers,
-        difficulty
-    };
-    
-    console.log("Question data:", questionData);
-    
-    // Update or add the question
-    let updatedQuestions;
-    if (questionIdInput.value) {
-        // Update existing question
-        updatedQuestions = questions.map(q => q.id === id ? questionData : q);
-    } else {
-        // Add new question
-        updatedQuestions = [...questions, questionData];
-    }
-    
+async function saveQuestion(event) {
+    event.preventDefault();
+
     try {
+        // Validate form data
+        const question = {
+            text: document.getElementById('question').value.trim(),
+            answers: [
+                document.getElementById('answer1').value.trim(),
+                document.getElementById('answer2').value.trim(),
+                document.getElementById('answer3').value.trim(),
+                document.getElementById('answer4').value.trim()
+            ],
+            correctAnswer: parseInt(document.getElementById('correctAnswer').value)
+        };
+
+        // Check if all fields are filled
+        if (!question.text || question.answers.some(answer => !answer)) {
+            throw new Error('Please fill in all fields');
+        }
+
+        // Validate correct answer
+        if (isNaN(question.correctAnswer) || question.correctAnswer < 1 || question.correctAnswer > 4) {
+            throw new Error('Correct answer must be between 1 and 4');
+        }
+
         const response = await fetch('/api/questions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(updatedQuestions)
+            body: JSON.stringify(question)
         });
-        
+
+        const data = await response.json();
+
         if (!response.ok) {
-            throw new Error('Failed to save question');
+            throw new Error(data.error || 'Failed to save question');
         }
-        
-        questions = updatedQuestions;
-        displayQuestions();
-        hideQuestionForm();
+
+        // Clear form on success
+        document.getElementById('questionForm').reset();
+        await loadQuestions();
+        alert('Question saved successfully!');
+
     } catch (error) {
-        console.error('Error saving question:', error);
-        alert('Failed to save question');
+        console.error('Error:', error);
+        alert(error.message || 'Failed to save question');
     }
 }
 
-// Simplified admin.js to focus just on the button functionality
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("Admin.js loaded");
+document.addEventListener('DOMContentLoaded', () => {
+    const questionForm = document.getElementById('questionForm');
     
-    // Get important DOM elements
-    const addQuestionBtn = document.getElementById('add-question-btn');
-    const questionForm = document.getElementById('question-form');
-    const cancelEditBtn = document.getElementById('cancel-edit');
-    
-    // Show the form when "Add New Question" is clicked
-    if (addQuestionBtn) {
-        addQuestionBtn.addEventListener('click', function() {
-            console.log("Add button clicked from admin.js");
-            if (questionForm) {
-                questionForm.classList.remove('hidden');
-            }
-        });
-    }
-    
-    // Hide the form when "Cancel" is clicked
-    if (cancelEditBtn) {
-        cancelEditBtn.addEventListener('click', function() {
-            if (questionForm) {
-                questionForm.classList.add('hidden');
-            }
-        });
-    }
-    
-    // Load questions initially
+    // Load existing questions when page loads
     loadQuestions();
+
+    questionForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const questionData = {
+            text: document.getElementById('question').value,
+            answers: [
+                document.getElementById('answer1').value,
+                document.getElementById('answer2').value,
+                document.getElementById('answer3').value,
+                document.getElementById('answer4').value
+            ],
+            correctAnswer: parseInt(document.getElementById('correctAnswer').value)
+        };
+
+        try {
+            const response = await fetch('/api/questions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(questionData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                alert('Question saved successfully!');
+                questionForm.reset();
+                // Reload questions after saving
+                loadQuestions();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to save question: ' + error.message);
+        }
+    });
 });
 
-// Simple placeholder functions
+// Function to load questions
 async function loadQuestions() {
-    console.log("Loading questions...");
     try {
         const response = await fetch('/api/questions');
         const questions = await response.json();
         displayQuestions(questions);
     } catch (error) {
-        console.error("Error loading questions:", error);
+        console.error('Error loading questions:', error);
     }
 }
 
+// Function to display questions
 function displayQuestions(questions) {
-    console.log("Displaying questions:", questions);
-    const questionsList = document.getElementById('questions-list');
-    if (!questionsList) return;
-    
-    questionsList.innerHTML = '';
-    
-    questions.forEach(question => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${question.id}</td>
-            <td>${question.question}</td>
-            <td>${question.correctAnswer}</td>
-            <td>${question.difficulty}</td>
-            <td>
-                <button class="edit-btn">Edit</button>
-                <button class="delete-btn">Delete</button>
-            </td>
+    const questionsList = document.getElementById('questionsList');
+    questionsList.innerHTML = ''; // Clear existing content
+
+    if (questions.length === 0) {
+        questionsList.innerHTML = '<p>No questions available.</p>';
+        return;
+    }
+
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'questions-grid';
+
+    questions.forEach((question, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `
+            <h3>Q${index + 1}</h3>
+            <div class="question-text">${question.text}</div>
+            <ol class="answers-list">
+                ${question.answers.map(answer => `
+                    <li>${answer}</li>
+                `).join('')}
+            </ol>
+            <div class="correct-answer">Correct: ${question.correctAnswer}</div>
         `;
-        questionsList.appendChild(row);
+        gridContainer.appendChild(card);
     });
+
+    questionsList.appendChild(gridContainer);
 }

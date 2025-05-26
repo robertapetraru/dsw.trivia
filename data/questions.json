@@ -31,5 +31,16 @@
       "Arctic Ocean"
     ],
     "difficulty": 2
+  },
+  {
+    "id": 1748261874163,
+    "question": "Cine a fost primul domnitor al Țării Românești care a unificat pentru scurt timp cele trei provincii românești?",
+    "correctAnswer": "Mihai Viteazul",
+    "incorrectAnswers": [
+      "Alexandru Ioan Cuza",
+      "Ștefan cel Mare",
+      "Vlad Țepeș"
+    ],
+    "difficulty": 1
   }
 ]

@@ -3,82 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trivia Admin</title>
+    <title>Quiz Admin Panel</title>
     <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
-    <div class="container">
+    <div class="admin-container">
         <header>
-            <h1>Trivia Admin Panel</h1>
-            <a href="index.html" class="admin-link">Back to Game</a>
+            <h1>Quiz Admin Panel</h1>
+            <a href="../html/index.html" class="back-button">Back to Game</a>
         </header>
-        
+
         <main>
-            <!-- This button must have exactly this ID -->
-            <div class="admin-controls">
-                <h2>Manage Questions</h2>
-                <!-- Replace your add question button with this version -->
-                <button id="add-question-btn" onclick="document.getElementById('question-form').classList.remove('hidden'); console.log('Inline click worked!');">Add New Question</button>
-            </div>
-            
-            <!-- This form must have exactly this ID and the hidden class -->
-            <div id="question-form" class="hidden">
-                <h3 id="form-title">Add New Question</h3>
-                <form id="question-data-form">
-                    <!-- Form content -->
-                    <input type="hidden" id="question-id">
-                    
+            <section class="question-form">
+                <h2>Add New Question</h2>
+                <form id="questionForm">
                     <div class="form-group">
-                        <label for="question-text">Question:</label>
-                        <textarea id="question-text" required></textarea>
+                        <label for="question">Question:</label>
+                        <textarea id="question" required></textarea>
                     </div>
-                    
+
+                    <div class="answers-grid">
+                        <div class="form-group">
+                            <label for="answer1">Answer 1:</label>
+                            <input type="text" id="answer1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="answer2">Answer 2:</label>
+                            <input type="text" id="answer2" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="answer3">Answer 3:</label>
+                            <input type="text" id="answer3" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="answer4">Answer 4:</label>
+                            <input type="text" id="answer4" required>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label for="correct-answer">Correct Answer:</label>
-                        <input type="text" id="correct-answer" required>
+                        <label for="correctAnswer">Correct Answer (1-4):</label>
+                        <input type="number" id="correctAnswer" min="1" max="4" required>
                     </div>
-                    
-                    <div class="form-group">
-                        <label>Incorrect Answers:</label>
-                        <input type="text" class="incorrect-answer" placeholder="Incorrect Answer 1" required>
-                        <input type="text" class="incorrect-answer" placeholder="Incorrect Answer 2" required>
-                        <input type="text" class="incorrect-answer" placeholder="Incorrect Answer 3" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="difficulty">Difficulty:</label>
-                        <select id="difficulty" required>
-                            <option value="1">Easy</option>
-                            <option value="2">Medium</option>
-                            <option value="3">Hard</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <button type="submit" id="save-question">Save</button>
-                        <button type="button" id="cancel-edit">Cancel</button>
-                    </div>
+
+                    <button type="submit" class="save-button">Save Question</button>
                 </form>
-            </div>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Question</th>
-                        <th>Answer</th>
-                        <th>Difficulty</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="questions-list">
-                    <!-- Questions will be populated here -->
-                </tbody>
-            </table>
+            </section>
+
+            <section class="questions-list">
+                <h2>Existing Questions</h2>
+                <div id="questionsList"></div>
+            </section>
         </main>
     </div>
-
     <script src="../js/admin.js"></script>
-    <script src="../js/debug.js"></script>
 </body>
 </html>

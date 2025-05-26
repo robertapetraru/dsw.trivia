@@ -1,153 +1,132 @@
-// Game variables
+// Initialize game state variables
 let questions = [];
-let currentQuestion = null;
-let score = 0;
-let currentDifficulty = 1;
+let currentScore = 0;
 
-// DOM elements
-const welcomeScreen = document.getElementById('welcome-screen');
-const gameScreen = document.getElementById('game-screen');
-const gameOverScreen = document.getElementById('game-over-screen');
-const questionElement = document.getElementById('question');
-const answersContainer = document.getElementById('answers-container');
-const scoreElement = document.getElementById('score');
-const finalScoreElement = document.getElementById('final-score');
-const startButton = document.getElementById('start-game');
-const playAgainButton = document.getElementById('play-again');
+// Wait for DOM to load and initialize game
+document.addEventListener('DOMContentLoaded', initializeGame);
 
-// Event listeners
-startButton.addEventListener('click', startGame);
-playAgainButton.addEventListener('click', startGame);
-
-// Load questions from the server
-async function loadQuestions() {
+async function initializeGame() {
     try {
+        // Load questions from server
         const response = await fetch('/api/questions');
         if (!response.ok) {
             throw new Error('Failed to fetch questions');
         }
         questions = await response.json();
+        console.log('Questions loaded:', questions);
+
+        // Setup event listeners
+        const startButton = document.getElementById('start-game');
+        if (startButton) {
+            startButton.addEventListener('click', startGame);
+        } else {
+            console.error('Start game button not found');
+        }
     } catch (error) {
-        console.error('Error loading questions:', error);
-        questions = []; // Empty array if there's an error
+        console.error('Game initialization failed:', error);
+        showError('Failed to load questions. Please try again.');
     }
 }
 
-// Start the game
-async function startGame() {
-    // Reset game state
-    score = 0;
-    currentDifficulty = 1;
-    scoreElement.textContent = score;
-    
-    // Hide/show screens
-    welcomeScreen.classList.add('hidden');
-    gameOverScreen.classList.add('hidden');
-    gameScreen.classList.remove('hidden');
-    
-    // Load questions and start first round
-    await loadQuestions();
-    if (questions.length > 0) {
-        nextQuestion();
-    } else {
-        endGame();
-    }
+function startGame() {
+    currentScore = 0;
+    hideElement('start-game');
+    showRandomQuestion();
 }
 
-// Select and display a random question
-function nextQuestion() {
-    // Filter questions based on current difficulty (including lower difficulties if needed)
-    let availableQuestions = questions.filter(q => q.difficulty <= currentDifficulty);
-    
-    // If no questions at the current difficulty, increase difficulty
-    if (availableQuestions.length === 0 && currentDifficulty < 3) {
-        currentDifficulty++;
-        availableQuestions = questions.filter(q => q.difficulty <= currentDifficulty);
-    }
-    
-    // If there are no questions available, end the game
-    if (availableQuestions.length === 0) {
-        endGame();
+function showRandomQuestion() {
+    if (!questions.length) {
+        showError('No questions available');
         return;
     }
+
+    // Hide welcome text and admin panel
+    document.querySelector('h1').style.display = 'none';
+    document.querySelector('.description').style.display = 'none';
+    document.querySelector('.admin-link').style.display = 'none';
+
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    const question = questions[randomIndex];
     
-    // Select a random question
-    currentQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
-    
-    // Display the question
-    questionElement.textContent = currentQuestion.question;
-    
-    // Create answer buttons
-    answersContainer.innerHTML = '';
-    
-    // Combine all answers and shuffle them
-    const allAnswers = [
-        currentQuestion.correctAnswer, 
-        ...currentQuestion.incorrectAnswers
-    ];
-    shuffleArray(allAnswers);
-    
-    // Create buttons for each answer
-    allAnswers.forEach(answer => {
-        const button = document.createElement('button');
-        button.className = 'answer-btn';
-        button.textContent = answer;
-        button.addEventListener('click', () => checkAnswer(answer));
-        answersContainer.appendChild(button);
-    });
-    
-    // Increase difficulty every 3 correct answers
-    if (score > 0 && score % 3 === 0 && currentDifficulty < 3) {
-        currentDifficulty++;
+    const gameContainer = document.getElementById('game-container');
+    if (!gameContainer) {
+        console.error('Game container not found');
+        return;
     }
+
+    gameContainer.innerHTML = `
+        <div class="question-card">
+            <h2>${question.text}</h2>
+            <div class="answers-grid">
+                ${question.answers.map((answer, index) => `
+                    <button class="answer-btn" data-index="${index + 1}">
+                        ${answer}
+                    </button>
+                `).join('')}
+            </div>
+        </div>
+    `;
+
+    // Add click handlers to answer buttons
+    const answerButtons = gameContainer.querySelectorAll('.answer-btn');
+    answerButtons.forEach(button => {
+        button.addEventListener('click', (e) => checkAnswer(e, question));
+    });
 }
 
-// Check if the answer is correct
-function checkAnswer(selectedAnswer) {
-    const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
+function checkAnswer(event, question) {
+    const selectedAnswer = parseInt(event.target.dataset.index);
     
-    // Highlight the buttons
-    const buttons = answersContainer.querySelectorAll('.answer-btn');
-    buttons.forEach(button => {
-        if (button.textContent === currentQuestion.correctAnswer) {
-            button.classList.add('correct');
-        } else if (button.textContent === selectedAnswer && !isCorrect) {
-            button.classList.add('incorrect');
-        }
-        
-        // Disable all buttons
-        button.disabled = true;
-    });
-    
-    // Update score and proceed
-    if (isCorrect) {
-        score++;
-        scoreElement.textContent = score;
-        
-        // Wait a moment before showing the next question
-        setTimeout(() => {
-            nextQuestion();
-        }, 1500);
+    if (selectedAnswer === question.correctAnswer) {
+        currentScore++;
+        showRandomQuestion();
     } else {
-        // Game over
-        setTimeout(() => {
-            endGame();
-        }, 1500);
+        showGameOver();
     }
 }
 
-// End the game
-function endGame() {
-    gameScreen.classList.add('hidden');
-    gameOverScreen.classList.remove('hidden');
-    finalScoreElement.textContent = score;
+function showGameOver() {
+    // Show hidden elements again
+    document.querySelector('h1').style.display = 'block';
+    document.querySelector('.description').style.display = 'block';
+    document.querySelector('.admin-link').style.display = 'block';
+
+    const gameContainer = document.getElementById('game-container');
+    if (!gameContainer) return;
+
+    gameContainer.innerHTML = `
+        <div class="game-over">
+            <h2>Wrong Answer!</h2>
+            <button id="play-again" class="play-again-btn">Play Again</button>
+        </div>
+    `;
+
+    showElement('start-game');
+
+    const playAgainButton = document.getElementById('play-again');
+    if (playAgainButton) {
+        playAgainButton.addEventListener('click', startGame);
+    }
 }
 
-// Fisher-Yates shuffle algorithm
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+// Utility functions
+function hideElement(id) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.style.display = 'none';
     }
-    return array;
+}
+
+function showElement(id) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.style.display = 'block';
+    }
+}
+
+function showError(message) {
+    const gameContainer = document.getElementById('game-container');
+    if (gameContainer) {
+        gameContainer.innerHTML = `<div class="error-message">${message}</div>`;
+    }
 }

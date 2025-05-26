@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trivia Game</title>
+    <title>Quiz Game</title>
     <link rel="stylesheet" href="../css/index.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Trivia Challenge</h1>
-            <div class="score-container">
-                <span>Score: </span><span id="score">0</span>
+            <div class="header-right">
+                <div class="score">Score: 0</div>
+                <a href="index.html" class="back-home">Back Home</a>
             </div>
         </header>
 
         <main>
             <div id="welcome-screen">
-                <h2>Welcome to the Trivia Challenge!</h2>
-                <p>Test your knowledge with random questions. The game ends when you answer incorrectly.</p>
+                <h1>Welcome to the Trivia Challenge!</h1>
+                <p class="description">Test your knowledge with random questions. The game ends when you answer incorrectly.</p>
+                
                 <button id="start-game">Start Game</button>
-                <a href="html/admin.html" class="admin-link">Admin Panel</a>
+                <div id="game-container"></div>
+                <a href="admin.html" class="admin-link">Admin Panel</a>
             </div>
 
             <div id="game-screen" class="hidden">
@@ -36,6 +39,15 @@
                 <h2>Game Over!</h2>
                 <p>Your final score: <span id="final-score">0</span></p>
                 <button id="play-again">Play Again</button>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <h3>What is your question?</h3>
+                </div>
+                <div class="answer">
+                    <p>This is the answer</p>
+                </div>
             </div>
         </main>
 

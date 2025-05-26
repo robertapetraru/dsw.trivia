@@ -9,5 +9,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "cors": "^2.x.x",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "nodemon": "^2.x.x",
+    "path": "^0.12.7"
+  }
 }
