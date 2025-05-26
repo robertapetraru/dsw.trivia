@@ -37,6 +37,10 @@ function startGame() {
     // Reset visual score
     document.querySelector('.score').textContent = 'Score: 0';
     hideElement('start-game');
+    
+    // Hide welcome text and admin panel
+    setWelcomeElementsVisibility(false);
+    
     showRandomQuestion();
 }
 
@@ -46,11 +50,6 @@ function showRandomQuestion() {
         showAllQuestionsCompleted();
         return;
     }
-
-    // Hide welcome text and admin panel
-    document.querySelector('h1').style.display = 'none';
-    document.querySelector('.description').style.display = 'none';
-    document.querySelector('.admin-link').style.display = 'none';
 
     // Get random question from available questions
     const randomIndex = Math.floor(Math.random() * availableQuestions.length);
@@ -101,46 +100,58 @@ function checkAnswer(event, question) {
 }
 
 function showGameOver() {
-    // Show hidden elements again
-    document.querySelector('h1').style.display = 'block';
-    document.querySelector('.description').style.display = 'block';
-    document.querySelector('.admin-link').style.display = 'block';
+    // Show welcome elements again
+    setWelcomeElementsVisibility(true);
 
-    const gameContainer = document.getElementById('game-container');
-    if (!gameContainer) return;
-
-    gameContainer.innerHTML = `
+    // Show game over screen
+    updateGameContainer(`
         <div class="game-over">
             <h2>Răspuns greșit!</h2>
             <p>Scorul final: ${currentScore}</p>
             <button id="play-again" class="play-again-btn">Joacă din nou</button>
         </div>
-    `;
-
-    const playAgainButton = document.getElementById('play-again');
-    if (playAgainButton) {
-        playAgainButton.addEventListener('click', startGame);
-    }
+    `);
+    
+    // Setup play again button
+    setupPlayAgainButton();
 }
 
 function showAllQuestionsCompleted() {
-    // Show hidden elements again
-    document.querySelector('h1').style.display = 'block';
-    document.querySelector('.description').style.display = 'block';
-    document.querySelector('.admin-link').style.display = 'block';
+    // Show welcome elements again
+    setWelcomeElementsVisibility(true);
 
-    const gameContainer = document.getElementById('game-container');
-    if (!gameContainer) return;
-
-    gameContainer.innerHTML = `
+    // Show completion screen
+    updateGameContainer(`
         <div class="game-completed">
             <h2>Felicitări! 🎉</h2>
             <p>Ai răspuns corect la toate ${currentScore} întrebări!</p>
             <p>Scorul perfect: ${currentScore}/${questions.length}</p>
             <button id="play-again" class="play-again-btn">Joacă din nou</button>
         </div>
-    `;
+    `);
+    
+    // Setup play again button
+    setupPlayAgainButton();
+}
 
+// Helper function to set welcome elements visibility
+function setWelcomeElementsVisibility(isVisible) {
+    const display = isVisible ? 'block' : 'none';
+    document.querySelector('h1').style.display = display;
+    document.querySelector('.description').style.display = display;
+    document.querySelector('.admin-link').style.display = display;
+}
+
+// Helper function to update game container
+function updateGameContainer(html) {
+    const gameContainer = document.getElementById('game-container');
+    if (gameContainer) {
+        gameContainer.innerHTML = html;
+    }
+}
+
+// Set up play again button
+function setupPlayAgainButton() {
     const playAgainButton = document.getElementById('play-again');
     if (playAgainButton) {
         playAgainButton.addEventListener('click', startGame);
@@ -163,8 +174,5 @@ function showElement(id) {
 }
 
 function showError(message) {
-    const gameContainer = document.getElementById('game-container');
-    if (gameContainer) {
-        gameContainer.innerHTML = `<div class="error-message">${message}</div>`;
-    }
+    updateGameContainer(`<div class="error-message">${message}</div>`);
 }

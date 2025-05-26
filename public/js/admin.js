@@ -19,19 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM fully loaded - initializing admin panel");
     
     // Get DOM elements
-    questionsList = document.getElementById('questions-list');
-    questionForm = document.getElementById('question-form');
-    questionDataForm = document.getElementById('question-data-form');
-    formTitle = document.getElementById('form-title');
+    questionsList = document.getElementById('questionsList');
+    questionForm = document.getElementById('questionForm');
     addQuestionBtn = document.getElementById('add-question-btn');
     cancelEditBtn = document.getElementById('cancel-edit');
-    questionIdInput = document.getElementById('question-id');
-    questionTextInput = document.getElementById('question-text');
-    correctAnswerInput = document.getElementById('correct-answer');
-    incorrectAnswerInputs = document.querySelectorAll('.incorrect-answer');
-    difficultySelect = document.getElementById('difficulty');
-    
-    console.log("Add Question Button found:", addQuestionBtn !== null);
     
     // Set up event listeners
     if (addQuestionBtn) {
@@ -45,10 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
         cancelEditBtn.addEventListener('click', hideQuestionForm);
     }
     
-    if (questionDataForm) {
-        questionDataForm.addEventListener('submit', function(event) {
+    if (questionForm) {
+        questionForm.addEventListener('submit', async (event) => {
             event.preventDefault();
-            saveQuestion();
+            await saveQuestion(event);
         });
     }
     
@@ -61,12 +52,9 @@ function showAddQuestionForm() {
     console.log("Showing add question form");
     
     // Reset form
-    formTitle.textContent = 'Add New Question';
-    questionIdInput.value = '';
-    questionTextInput.value = '';
-    correctAnswerInput.value = '';
-    incorrectAnswerInputs.forEach(input => input.value = '');
-    difficultySelect.value = '1';
+    if (questionForm) {
+        questionForm.reset();
+    }
     
     // Show form
     questionForm.classList.remove('hidden');
@@ -87,49 +75,10 @@ async function loadQuestions() {
             throw new Error('Failed to fetch questions');
         }
         questions = await response.json();
-        displayQuestions();
+        displayQuestions(questions);
     } catch (error) {
         console.error('Error loading questions:', error);
     }
-}
-
-// Display questions in the table
-function displayQuestions() {
-    console.log("Displaying questions:", questions.length);
-    questionsList.innerHTML = '';
-    
-    questions.forEach(question => {
-        const row = document.createElement('tr');
-        
-        row.innerHTML = `
-            <td>${question.id}</td>
-            <td>${question.question}</td>
-            <td>${question.correctAnswer}</td>
-            <td>${getDifficultyLabel(question.difficulty)}</td>
-            <td class="action-buttons">
-                <button class="edit-btn" data-id="${question.id}">Edit</button>
-                <button class="delete-btn" data-id="${question.id}">Delete</button>
-            </td>
-        `;
-        
-        questionsList.appendChild(row);
-        
-        // Add event listeners to the buttons
-        const editBtn = row.querySelector('.edit-btn');
-        const deleteBtn = row.querySelector('.delete-btn');
-        
-        if (editBtn) {
-            editBtn.addEventListener('click', function() {
-                editQuestion(question.id);
-            });
-        }
-        
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', function() {
-                deleteQuestion(question.id);
-            });
-        }
-    });
 }
 
 // Get difficulty label
@@ -140,30 +89,6 @@ function getDifficultyLabel(difficulty) {
         case 3: return 'Hard';
         default: return 'Unknown';
     }
-}
-
-// Edit a question
-function editQuestion(id) {
-    const question = questions.find(q => q.id === id);
-    if (!question) return;
-    
-    console.log("Editing question:", id);
-    
-    formTitle.textContent = 'Edit Question';
-    questionIdInput.value = question.id;
-    questionTextInput.value = question.question;
-    correctAnswerInput.value = question.correctAnswer;
-    
-    // Populate incorrect answers
-    question.incorrectAnswers.forEach((answer, index) => {
-        if (index < incorrectAnswerInputs.length) {
-            incorrectAnswerInputs[index].value = answer;
-        }
-    });
-    
-    difficultySelect.value = question.difficulty;
-    
-    questionForm.classList.remove('hidden');
 }
 
 // Delete a question
@@ -190,7 +115,7 @@ async function deleteQuestion(id) {
         }
         
         questions = updatedQuestions;
-        displayQuestions();
+        displayQuestions(questions);
     } catch (error) {
         console.error('Error deleting question:', error);
         alert('Failed to delete question');
@@ -249,67 +174,13 @@ async function saveQuestion(event) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const questionForm = document.getElementById('questionForm');
-    
-    // Load existing questions when page loads
-    loadQuestions();
-
-    questionForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const questionData = {
-            text: document.getElementById('question').value,
-            answers: [
-                document.getElementById('answer1').value,
-                document.getElementById('answer2').value,
-                document.getElementById('answer3').value,
-                document.getElementById('answer4').value
-            ],
-            correctAnswer: parseInt(document.getElementById('correctAnswer').value)
-        };
-
-        try {
-            const response = await fetch('/api/questions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(questionData)
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const result = await response.json();
-            if (result.success) {
-                alert('Question saved successfully!');
-                questionForm.reset();
-                // Reload questions after saving
-                loadQuestions();
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Failed to save question: ' + error.message);
-        }
-    });
-});
-
-// Function to load questions
-async function loadQuestions() {
-    try {
-        const response = await fetch('/api/questions');
-        const questions = await response.json();
-        displayQuestions(questions);
-    } catch (error) {
-        console.error('Error loading questions:', error);
-    }
-}
-
 // Function to display questions
 function displayQuestions(questions) {
-    const questionsList = document.getElementById('questionsList');
+    if (!questionsList) {
+        console.error("Questions list element not found");
+        return;
+    }
+    
     questionsList.innerHTML = ''; // Clear existing content
 
     if (questions.length === 0) {
@@ -331,10 +202,52 @@ function displayQuestions(questions) {
                     <li>${answer}</li>
                 `).join('')}
             </ol>
-            <div class="correct-answer">Correct: ${question.correctAnswer}</div>
+            <div class="correct-answer">Correct: Answer ${question.correctAnswer}</div>
+            <div class="action-buttons">
+                <button class="edit-btn" data-id="${question.id || index}">Edit</button>
+                <button class="delete-btn" data-id="${question.id || index}">Delete</button>
+            </div>
         `;
         gridContainer.appendChild(card);
+        
+        // Add event listeners to the buttons
+        const editBtn = card.querySelector('.edit-btn');
+        const deleteBtn = card.querySelector('.delete-btn');
+        
+        if (editBtn) {
+            editBtn.addEventListener('click', function() {
+                editQuestion(question.id || index);
+            });
+        }
+        
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', function() {
+                deleteQuestion(question.id || index);
+            });
+        }
     });
 
     questionsList.appendChild(gridContainer);
+}
+
+// Edit a question
+function editQuestion(id) {
+    const question = questions.find(q => q.id === id || questions.indexOf(q) === id);
+    if (!question) return;
+    
+    console.log("Editing question:", id);
+    
+    document.getElementById('question').value = question.text;
+    
+    // Populate answers
+    if (question.answers && question.answers.length >= 4) {
+        document.getElementById('answer1').value = question.answers[0];
+        document.getElementById('answer2').value = question.answers[1];
+        document.getElementById('answer3').value = question.answers[2];
+        document.getElementById('answer4').value = question.answers[3];
+    }
+    
+    document.getElementById('correctAnswer').value = question.correctAnswer;
+    
+    questionForm.classList.remove('hidden');
 }
