@@ -1,5 +1,6 @@
 // Initialize game state variables
 let questions = [];
+let availableQuestions = []; // Track unused questions
 let currentScore = 0;
 
 // Wait for DOM to load and initialize game
@@ -30,15 +31,19 @@ async function initializeGame() {
 
 function startGame() {
     currentScore = 0;
-       // Resetează scorul vizual
-       document.querySelector('.score').textContent = 'Score: 0';
+    // Reset available questions pool
+    availableQuestions = [...questions]; // Create a copy of all questions
+    
+    // Reset visual score
+    document.querySelector('.score').textContent = 'Score: 0';
     hideElement('start-game');
     showRandomQuestion();
 }
 
 function showRandomQuestion() {
-    if (!questions.length) {
-        showError('No questions available');
+    if (!availableQuestions.length) {
+        // All questions have been used - show completion message
+        showAllQuestionsCompleted();
         return;
     }
 
@@ -47,8 +52,12 @@ function showRandomQuestion() {
     document.querySelector('.description').style.display = 'none';
     document.querySelector('.admin-link').style.display = 'none';
 
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    const question = questions[randomIndex];
+    // Get random question from available questions
+    const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+    const question = availableQuestions[randomIndex];
+    
+    // Remove the selected question from available questions
+    availableQuestions.splice(randomIndex, 1);
     
     const gameContainer = document.getElementById('game-container');
     if (!gameContainer) {
@@ -65,6 +74,9 @@ function showRandomQuestion() {
                         ${answer}
                     </button>
                 `).join('')}
+            </div>
+            <div class="question-counter">
+                Întrebări rămase: ${availableQuestions.length}
             </div>
         </div>
     `;
@@ -89,7 +101,6 @@ function checkAnswer(event, question) {
 }
 
 function showGameOver() {
-    
     // Show hidden elements again
     document.querySelector('h1').style.display = 'block';
     document.querySelector('.description').style.display = 'block';
@@ -100,12 +111,35 @@ function showGameOver() {
 
     gameContainer.innerHTML = `
         <div class="game-over">
-            <h2>Wrong Answer!</h2>
-            <button id="play-again" class="play-again-btn">Play Again</button>
+            <h2>Răspuns greșit!</h2>
+            <p>Scorul final: ${currentScore}</p>
+            <button id="play-again" class="play-again-btn">Joacă din nou</button>
         </div>
     `;
 
-   
+    const playAgainButton = document.getElementById('play-again');
+    if (playAgainButton) {
+        playAgainButton.addEventListener('click', startGame);
+    }
+}
+
+function showAllQuestionsCompleted() {
+    // Show hidden elements again
+    document.querySelector('h1').style.display = 'block';
+    document.querySelector('.description').style.display = 'block';
+    document.querySelector('.admin-link').style.display = 'block';
+
+    const gameContainer = document.getElementById('game-container');
+    if (!gameContainer) return;
+
+    gameContainer.innerHTML = `
+        <div class="game-completed">
+            <h2>Felicitări! 🎉</h2>
+            <p>Ai răspuns corect la toate ${currentScore} întrebări!</p>
+            <p>Scorul perfect: ${currentScore}/${questions.length}</p>
+            <button id="play-again" class="play-again-btn">Joacă din nou</button>
+        </div>
+    `;
 
     const playAgainButton = document.getElementById('play-again');
     if (playAgainButton) {

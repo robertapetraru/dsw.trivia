@@ -98,5 +98,206 @@
       "Iași"
     ],
     "correctAnswer": 1
+  },
+  {
+    "text": "Care este capitala Canadei?",
+    "answers": [
+      "Toronto",
+      "Vancouver",
+      "Ottawa",
+      "Montreal"
+    ],
+    "correctAnswer": 3
+  },
+  {
+    "text": "Cine a scris piesa de teatru „Hamlet”?",
+    "answers": [
+      "Molière",
+      "William Shakespeare",
+      "Johann Wolfgang von Goethe",
+      "Anton Pavlovici Cehov"
+    ],
+    "correctAnswer": 2
+  },
+  {
+    "text": "Care este cel mai mare ocean de pe Pământ?",
+    "answers": [
+      "Oceanul Indian",
+      "Oceanul Arctic",
+      "Oceanul Atlantic",
+      "Oceanul Pacific"
+    ],
+    "correctAnswer": 4
+  },
+  {
+    "text": "În ce an a avut loc Revoluția Franceză?",
+    "answers": [
+      "1492",
+      "1789",
+      "1914",
+      "1812"
+    ],
+    "correctAnswer": 2
+  },
+  {
+    "text": "Ce planetă este cunoscută ca „Planeta Roșie”?",
+    "answers": [
+      "Venus",
+      "Saturn",
+      "Marte",
+      "Jupiter"
+    ],
+    "correctAnswer": 3
+  },
+  {
+    "text": "Cine a pictat „Cina cea de Taină”?",
+    "answers": [
+      "Michelangelo",
+      "Leonardo da Vinci",
+      "Pablo Picasso",
+      "Vincent van Gogh"
+    ],
+    "correctAnswer": 2
+  },
+  {
+    "text": "Ce element chimic are simbolul „O”?",
+    "answers": [
+      "Aur",
+      "Oxigen",
+      "Osmium",
+      "Oxalat"
+    ],
+    "correctAnswer": 2
+  },
+  {
+    "text": "Care este cel mai lung fluviu din lume?",
+    "answers": [
+      "Amazon",
+      "Nil",
+      "Mississippi",
+      "Dunărea"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "text": "În ce țară se află piramidele de la Giza?",
+    "answers": [
+      "Grecia",
+      "Mexic",
+      "Egipt",
+      "Iran"
+    ],
+    "correctAnswer": 3
+  },
+  {
+    "text": "Cine a fost primul om care a pășit pe Lună?",
+    "answers": [
+      "Yuri Gagarin",
+      "Neil Armstrong",
+      "Buzz Aldrin",
+      "Alan Shepard"
+    ],
+    "correctAnswer": 2
+  },
+  {
+    "text": "Care este cel mai înalt munte din lume?",
+    "answers": [
+      "K2",
+      "Mont Blanc",
+      "Everest",
+      "Kilimanjaro"
+    ],
+    "correctAnswer": 3
+  },
+  {
+    "text": "Cine a scris romanul „Crimă și pedeapsă”?",
+    "answers": [
+      "Lev Tolstoi",
+      "Fiodor Dostoievski",
+      "Albert Camus",
+      "Franz Kafka"
+    ],
+    "correctAnswer": 2
+  },
+  {
+    "text": "Ce țară a inventat hârtia?",
+    "answers": [
+      "Egipt",
+      "India",
+      "China",
+      "Grecia"
+    ],
+    "correctAnswer": 3
+  },
+  {
+    "text": "Care este simbolul chimic al sodiului?",
+    "answers": [
+      "So",
+      "S",
+      "Na",
+      "Sd"
+    ],
+    "correctAnswer": 3
+  },
+  {
+    "text": "Ce continent are cel mai mare număr de țări?",
+    "answers": [
+      "Asia",
+      "Europa",
+      "Africa",
+      "America de Sud"
+    ],
+    "correctAnswer": 3
+  },
+  {
+    "text": "Care este cea mai populată țară din lume?",
+    "answers": [
+      "India",
+      "China",
+      "Statele Unite",
+      "Indonezia"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "text": "Ce pictor este cunoscut pentru stilul cubist?",
+    "answers": [
+      "Salvador Dalí",
+      "Pablo Picasso",
+      "Claude Monet",
+      "Rembrandt"
+    ],
+    "correctAnswer": 2
+  },
+  {
+    "text": "Câte planete sunt în Sistemul Solar (după excluderea lui Pluto)?",
+    "answers": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "correctAnswer": 2
+  },
+  {
+    "text": "În ce an a căzut Zidul Berlinului?",
+    "answers": [
+      "1985",
+      "1987",
+      "1989",
+      "1991"
+    ],
+    "correctAnswer": 3
+  },
+  {
+    "text": "Ce organ pompează sângele în corpul uman?",
+    "answers": [
+      "Ficatul",
+      "Creierul",
+      "Inima",
+      "Plămânii"
+    ],
+    "correctAnswer": 3
   }
+
 ]

@@ -9,36 +9,35 @@
 <body>
     <div class="container">
         <header>
-            <h1>Trivia Challenge</h1>
+            <h1>Provocarea Trivia</h1>
             <div class="header-right">
                 <div class="score">Score: 0</div>
-                <a href="index.html" class="back-home">Back Home</a>
             </div>
         </header>
 
         <main>
             <div id="welcome-screen">
-                <h1>Welcome to the Trivia Challenge!</h1>
-                <p class="description">Test your knowledge with random questions. The game ends when you answer incorrectly.</p>
-                
-                <button id="start-game">Start Game</button>
+                <h1>Bun venit la Provocarea Trivia!</h1>
+                <p class="description">Testează-ți cunoștințele cu întrebări aleatorii. Jocul se încheie când răspunzi greșit.</p>
+
+                <button id="start-game">Începe Jocul</button>
                 <div id="game-container"></div>
-                <a href="admin.html" class="admin-link">Admin Panel</a>
+                <a href="/html/admin.html" class="admin-link">Panou Admin</a>
             </div>
 
             <div id="game-screen" class="hidden">
                 <div id="question-container">
-                    <h2 id="question">Question goes here</h2>
+                    <h2 id="question">Întrebarea va apărea aici</h2>
                     <div id="answers-container">
-                        <!-- Answers will be inserted here -->
+                        <!-- Răspunsurile vor fi inserate aici -->
                     </div>
                 </div>
             </div>
 
             <div id="game-over-screen" class="hidden">
-                <h2>Game Over!</h2>
-                <p>Your final score: <span id="final-score">0</span></p>
-                <button id="play-again">Play Again</button>
+                <h2>Final de meci!</h2>
+                <p>Scorul tău final: <span id="final-score">0</span></p>
+                <button id="play-again">Joacă din nou</button>
             </div>
 
 

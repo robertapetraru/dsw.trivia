@@ -3,55 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Admin Panel</title>
+    <title>Panou admin întrebări</title>
     <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <div class="admin-container">
         <header>
-            <h1>Quiz Admin Panel</h1>
-            <a href="../html/index.html" class="back-button">Back to Game</a>
+            <h1>Panou admin întrebări</h1>
+            <a href="/html/index.html" class="back-button">Înapoi la joc</a>
         </header>
 
         <main>
             <section class="question-form">
-                <h2>Add New Question</h2>
+                <h2>Adaugă o întrebare nouă</h2>
                 <form id="questionForm">
                     <div class="form-group">
-                        <label for="question">Question:</label>
+                        <label for="question">Întrebare:</label>
                         <textarea id="question" required></textarea>
                     </div>
 
                     <div class="answers-grid">
                         <div class="form-group">
-                            <label for="answer1">Answer 1:</label>
+                            <label for="answer1">Răspuns 1:</label>
                             <input type="text" id="answer1" required>
                         </div>
                         <div class="form-group">
-                            <label for="answer2">Answer 2:</label>
+                            <label for="answer2">Răspuns 2:</label>
                             <input type="text" id="answer2" required>
                         </div>
                         <div class="form-group">
-                            <label for="answer3">Answer 3:</label>
+                            <label for="answer3">Răspuns 3:</label>
                             <input type="text" id="answer3" required>
                         </div>
                         <div class="form-group">
-                            <label for="answer4">Answer 4:</label>
+                            <label for="answer4">Răspuns 4:</label>
                             <input type="text" id="answer4" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="correctAnswer">Correct Answer (1-4):</label>
+                        <label for="correctAnswer">Răspuns corect (1-4):</label>
                         <input type="number" id="correctAnswer" min="1" max="4" required>
                     </div>
 
-                    <button type="submit" class="save-button">Save Question</button>
+                    <button type="submit" class="save-button">Salvează întrebare</button>
                 </form>
             </section>
 
             <section class="questions-list">
-                <h2>Existing Questions</h2>
+                <h2>Întrebări existente</h2>
                 <div id="questionsList"></div>
             </section>
         </main>
