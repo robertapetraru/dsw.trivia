@@ -30,6 +30,8 @@ async function initializeGame() {
 
 function startGame() {
     currentScore = 0;
+       // Resetează scorul vizual
+       document.querySelector('.score').textContent = 'Score: 0';
     hideElement('start-game');
     showRandomQuestion();
 }
@@ -79,6 +81,7 @@ function checkAnswer(event, question) {
     
     if (selectedAnswer === question.correctAnswer) {
         currentScore++;
+        document.querySelector('.score').textContent = `Score: ${currentScore}`;
         showRandomQuestion();
     } else {
         showGameOver();
@@ -86,6 +89,7 @@ function checkAnswer(event, question) {
 }
 
 function showGameOver() {
+    
     // Show hidden elements again
     document.querySelector('h1').style.display = 'block';
     document.querySelector('.description').style.display = 'block';
@@ -101,7 +105,7 @@ function showGameOver() {
         </div>
     `;
 
-    showElement('start-game');
+   
 
     const playAgainButton = document.getElementById('play-again');
     if (playAgainButton) {

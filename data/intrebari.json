@@ -28,5 +28,75 @@
       "Plămânii"
     ],
     "correctAnswer": 3
+  },
+  {
+    "text": "În ce an a aderat România la Uniunea Europeană?",
+    "answers": [
+      "2004",
+      "2005",
+      "2007",
+      "2010"
+    ],
+    "correctAnswer": 3
+  },
+  {
+    "text": "Care este cel mai înalt munte din România?",
+    "answers": [
+      "Ceahlău",
+      "Moldoveanu",
+      "Retezat",
+      "Parâng"
+    ],
+    "correctAnswer": 2
+  },
+  {
+    "text": "Care este capitala județului Cluj?",
+    "answers": [
+      "Alba Iulia",
+      "Sibiu",
+      "Târgu Mureș",
+      "Cluj-Napoca"
+    ],
+    "correctAnswer": 4
+  },
+  {
+    "text": "Cine a fost primul președinte al României după 1989?",
+    "answers": [
+      "Ion Iliescu",
+      "Emil Constantinescu",
+      "Traian Băsescu",
+      "Klaus Iohannis"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "text": "Care este moneda oficială a României?",
+    "answers": [
+      "Leu",
+      "Euro",
+      "Dolar",
+      "Liră sterlină"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "text": "Ce mare artist român este cunoscut pentru sculpturile sale în piatră și bronz?",
+    "answers": [
+      "Constantin Brâncuși",
+      "Gheorghe Hagi",
+      "Mircea Eliade",
+      "George Enescu"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "text": "Care este cel mai mare oraș din România?",
+    "answers": [
+      "București",
+      "Cluj-Napoca",
+      "Timișoara",
+      "Iași"
+    ],
+    "correctAnswer": 1
   }
 ]
